@@ -1,6 +1,6 @@
 //******************************************************************************
 // WiFiUartTransparentBridge
-// Version 1.0.0
+// Version 1.1.0
 // Note
 // This sketch is based on "WiFiTelnetToSerial - Example Transparent UART to Telnet Server for esp8266"
 //******************************************************************************
@@ -8,12 +8,23 @@
 #include <ESP8266WiFi.h>
 #include "config.h"
 
-WiFiServer server(networkport);
-WiFiClient serverClient;
+//#define STATIC_IP_ADDR
+
+WiFiServer localServer(networkport);
+WiFiClient localClient;
+
+#ifdef STATIC_IP_ADDR
+IPAddress staticIP(192,168,0,25);
+IPAddress gateway(192,168,0,1);
+IPAddress subnet(255,255,255,0);
+#endif
 
 void setup() {
   Serial.begin(baudrate);
   WiFi.begin(ssid, password);
+#ifdef STATIC_IP_ADDR
+  WiFi.config(staticIP, gateway, subnet);
+#endif
   Serial.print("\nConnecting to "); Serial.println(ssid);
   
   uint8_t i = 0;
@@ -24,8 +35,8 @@ void setup() {
   }
   
   //start UART and the server
-  server.begin();
-  server.setNoDelay(true);
+  localServer.begin();
+  localServer.setNoDelay(true);
 
   Serial.print("Ready! Use 'Uart-WiFi Bridge ");
   Serial.print(WiFi.localIP());
@@ -35,19 +46,19 @@ void setup() {
 
 void loop() {
   //check if there are any new clients
-  if (server.hasClient()){
-    if (!serverClient.connected()){
-      if(serverClient) serverClient.stop();
-      serverClient = server.available();
+  if (localServer.hasClient()){
+    if (!localClient.connected()){
+      if(localClient) localClient.stop();
+      localClient = localServer.available();
     }
   }
       
   //check a client for data
-  if (serverClient && serverClient.connected()){
-    if(serverClient.available()){
-      size_t len = serverClient.available();
+  if (localClient && localClient.connected()){
+    if(localClient.available()){
+      size_t len = localClient.available();
       uint8_t sbuf[len];
-      serverClient.readBytes(sbuf, len);
+      localClient.readBytes(sbuf, len);
       Serial.write(sbuf, len);      
     }
   }
@@ -57,8 +68,8 @@ void loop() {
     size_t len = Serial.available();
     uint8_t sbuf[len];
     Serial.readBytes(sbuf, len);
-    if (serverClient && serverClient.connected()){
-      serverClient.write(sbuf, len);
+    if (localClient && localClient.connected()){
+      localClient.write(sbuf, len);
     }
   }
 }
