@@ -1,5 +1,9 @@
+
 # ESP8266-WiFi-UART-transparent-bridge
-Transparent serial communication sketch in Arduino IDE.
+Transparent serial communication sketch in Arduino IDE.  
+
+Is anyone interested in serial communication over the internet?  
+[ESP8266-Azure-IoT-Hub-UART-transparent-bridge ](https://github.com/NaoNaoMe/ESP8266-Azure-IoT-Hub-UART-transparent-bridge) might be a good example.
 
 This sketch used with [RM Classic](https://github.com/NaoNaoMe/RM-Classic).  
 You could find a tutorial on my [youtube channel](https://youtu.be/QDO9URz7r5U).  
