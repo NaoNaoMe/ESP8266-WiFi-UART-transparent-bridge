@@ -14,5 +14,5 @@ The UartWiFiBoard is battery-powered stand-alone uart-wifi board so that the boa
 You can communicate uart data over wifi, when you connect to the board's ip address by terminal apps.  
 When you send messages to the board's ip address, the board transmit uart data to your target and vice-versa.  
 
-![UartWiFiBoardwithArduinoUNO](mdContents/UartWifiBoardwithArduinoUNO.png)  
-
+[![UartWiFiBoardwithArduinoUNO](mdContents/UartWiFiBoardwithArduinoUNO.png)  
+*Uart WiFi Board*](https://github.com/NaoNaoMe/Uart-WiFi-Board)
